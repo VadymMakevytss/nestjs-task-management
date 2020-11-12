@@ -1,5 +1,7 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable prettier/prettier */
-import { Controller, Get, Post, Body } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { CreateTaskDto } from './dto/create-task.dto';
 import { Task } from './tasks.model';
 import { TasksService } from './tasks.service';
 
@@ -12,13 +14,15 @@ export class TasksController {
         return this.tasksService.getAllTasks();
     }
 
+    @Get(':id')
+    getTaskById(@Param() params): Task {
+        return this.tasksService.getTaskById(params.id);
+    }
+
     @Post()
     // createTask(@Body body) {} ... Available method also
-    creteTask(
-        @Body('title') title: string,
-        @Body('description') description: string,
-    ): Task {
-        return this.tasksService.createTask(title, description);
+    creteTask(@Body() createTaskDto: CreateTaskDto): Task {
+        return this.tasksService.createTask(createTaskDto);
     }
 
 }
